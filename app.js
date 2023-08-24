@@ -10,17 +10,10 @@ const http = require('http');
 const app = express();
 
 
-const ENVIRONMENT = process.env.NODE_ENV || 'development';
 
-let allowedOrigin;
-if (ENVIRONMENT === 'production') {
-    allowedOrigin = process.env.PRODUCTION_FRONTEND_URL; 
-} else {
-    allowedOrigin = "http://localhost:8080"; 
-}
 
 const corsOptions = {
-    origin: allowedOrigin, 
+    origin: process.env.CORS_ORIGIN , 
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true
