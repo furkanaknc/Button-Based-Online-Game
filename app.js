@@ -13,11 +13,13 @@ const app = express();
 
 
 const corsOptions = {
-    origin: "*" , 
+    origin: process.env.CORS_ORIGIN, 
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true
 };
+
+console.log('corse og:',corsOptions.origin)
 
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
