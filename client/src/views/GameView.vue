@@ -83,7 +83,7 @@ export default {
       }
     },
     connectSocket(roomId) {
-      this.socket = io('http://localhost:3000', { withCredentials: true });
+      this.socket = io({ withCredentials: true });
       this.socket.emit('join-room', roomId);
       
       this.socket.on('start-game', () => {
