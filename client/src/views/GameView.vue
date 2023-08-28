@@ -14,7 +14,7 @@
 
       <div v-if="turn">
         <button class="btn btn-primary" @click="handleButton1" :disabled="!turn">Basic Attack</button>
-        <button class="btn btn-warning" @click="handleButton2" :disabled="!turn || button2Count >= 2">Super Attack</button>
+        <button class="btn btn-warning" @click="handleButton2" :disabled="!turn || button2Used">Super Attack</button>
         <button class="btn btn-success" @click="handleButton3" :disabled="!turn || button3Count >= 2">Heal</button>
         <button class="btn btn-secondary" @click="surrender" :disabled="!turn">Surrender</button>
         <h2>You have {{ timeLeft }} seconds to act.</h2>
@@ -65,7 +65,7 @@ export default {
       turn: false,
       playerHealth: 100,
       opponentHealth: 100,
-      button2Count: 0,
+      button2Used: false,
       button3Count: 0,
       timer: null,
       timeLeft: 5,
@@ -198,7 +198,7 @@ export default {
       const damage = this.randomBetween(10, 50);
       this.socket.emit('damage', { damage, roomId: this.$route.params.roomId, userName: this.user.userName  });
       this.opponentHealth -= damage;
-      this.button2Count++;
+      this.button2Used= true;
       this.turn = false;
       this.stopTimer();
       //this.addLog(`${this.playerName} damaged for ${damage} points.`);
