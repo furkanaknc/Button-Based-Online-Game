@@ -11,10 +11,13 @@
             <label for="password">Password</label>
             <input id="password" type="password" placeholder="password" name="password" v-model="password" class="login-input form-control">
           </div>
-          <input type="submit" class="btn" value="Login">
-          &nbsp;&nbsp;&nbsp;&nbsp;
-          <router-link to="/register" class="card-link">Need an account ?</router-link>
+          <input type="submit" class="btn btn-login" value="Login">
+          <router-link to="/register" class=" btn btn-register btn-link card-link">Need an account ?</router-link>
         </form>
+        <br>
+        <br>
+        <br>
+        <br>
       </div>
     </div>
   </template>
@@ -59,17 +62,28 @@
 <style scoped>
 .btn{
   margin: 10px;
-  background-color: #183D3D;
-  color: #ffff;
+  
   width: 200px;
   gap: 50px;
  
 }
-.btn:hover{
+.btn-login:hover{
   background-color: #255757;
  
 }
 
+.btn-login{
+  background-color: #183D3D;
+  color: #ffff;
+}
+
+.btn-register{
+  background-color: #5C8374;
+  color: #ffff;
+}
+.btn-register:hover{
+  background-color: #38574b;
+}
 .login-input{
   background-color: #5C8374;
   color: #ffff;

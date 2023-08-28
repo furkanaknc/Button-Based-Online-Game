@@ -14,7 +14,7 @@
           Bu Oyun bir arkadaşlarınız ile birlikte oynayabileceğiniz buton bazlı bir oyun. <br>
           Her oda iki kişinin oynaması için uygundur. <br>
           Her oyuncu her oyunda: <br>
-          Super attack özelliğini 1 kere. <br>
+          Super attack özelliğini 2 kere. <br>
           Heal özelliğini 2 kere. <br>
           Attack özelliğini ise oyun bitene kadar kullanabilir. <br>
           Oyunda beklenmedik bir anda Rastgele gerçekleşen bir etkinlik ile oyunu kaybedebilir veya kazanabilirsiniz.
@@ -25,7 +25,7 @@
           This Game is a button based game that you can play with your friends. <br>
           Each room is suitable for two people to play. <br>
           Every player in every game: <br>
-          Super attack feature once. <br>
+          Super attack feature 2 times. <br>
           Heal feature 2 times. <br>
           He can use the Attack feature until the game is over. <br>
           You can lose or win the game with an unexpected event in the game.
@@ -49,6 +49,10 @@
       </div>
     </div>
   </div>
+  <br>
+  <br>
+  <br>
+  <br>
 </template>
 
 <script>

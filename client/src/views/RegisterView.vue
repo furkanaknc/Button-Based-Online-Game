@@ -20,10 +20,13 @@
             <label for="confirm_password">Confirm Password</label>
             <input id="confirm_password" type="password" placeholder="Confirm Password" name="confirm_password" v-model="confirm_password" class="register-input form-control">
           </div>
-          <button class="btn">Register</button>
-          &nbsp;&nbsp;&nbsp;&nbsp;
-          <router-link to="/login" class="card-link">Have you already an account?</router-link>
+          <button class="btn btn-register">Register</button>
+          <router-link to="/login" class="btn btn-link btn-login card-link">Have you already an account?</router-link>
         </form>
+        <br>
+        <br>
+        <br>
+        <br>
       </div>
     </div>
   </template>
@@ -67,15 +70,26 @@
 <style scoped>
 .btn{
   margin: 10px;
-  background-color: #183D3D;
-  color: #ffff;
+  
   width: 200px;
   gap: 50px;
  
 }
-.btn:hover{
+
+.btn-register{
+  background-color: #183D3D;
+  color: #ffff;
+}
+.btn-register:hover{
   background-color: #255757;
  
+}
+
+.btn-login{
+  background-color: #5C8374;
+  color: #ffff;}
+.btn-login:hover{
+  background-color: #38574b;
 }
 
 .register-input{
