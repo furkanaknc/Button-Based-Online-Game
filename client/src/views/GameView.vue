@@ -53,9 +53,9 @@ import { mapActions, mapGetters  } from "vuex";
 
 export default {
   computed:{
-    ...mapGetters(['user']),
+    ...mapGetters(['user','userName']),
     playerName(){
-      return this.user.userName
+      return this.userName
     }
   },
 
@@ -74,6 +74,8 @@ export default {
       opponentName: 'Enemy',
       soundOn:true,
       pingSound:new Audio(require('@/assets/pingSound.mp3')),
+      damageSound:new Audio(require('@/assets/damageSound.mp3')),
+      healSound:new Audio(require('@/assets/healSound.mp3')),
     };
   },
   methods: {
@@ -86,9 +88,11 @@ export default {
     },
     connectSocket(roomId) {
       this.socket = io({ withCredentials: true });
+      this.socket.emit('set-username', this.userName);
       this.socket.emit('join-room', roomId);
       
-      this.socket.on('start-game', () => {
+      this.socket.on('start-game', (data) => {
+        this.opponentName = data.opponentName;
         this.initializeGame();
       });
 
@@ -106,6 +110,9 @@ export default {
         this.playerHealth -= damage;
         this.turn = false;
         this.stopTimer();
+        if(this.soundOn){
+          this.damageSound.play();
+        }
       });
 
       this.socket.on('healed', (health) => {
@@ -117,6 +124,9 @@ export default {
    
       this.socket.on('opponent-healed', (health) => {
         this.opponentHealth += health;
+        if(this.soundOn){
+          this.healSound.play();
+        }
       });
             
       this.socket.on('opponent-surrendered', () => {
@@ -240,12 +250,11 @@ export default {
     },
 
   },
-  created() {
-    // Assuming you're getting the room ID from the route:
+  async created() {
+    await this.getProfile();
     const roomId = this.$route.params.roomId;
     this.connectSocket(roomId);
-    this.getProfile();
-    document.body.style.backgroundColor = '#93B1A6'
+    document.body.style.backgroundColor = '#93B1A6';
   },
   beforeUnmount() {
     this.pingSound.pause();

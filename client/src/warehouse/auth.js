@@ -4,6 +4,7 @@ import router from "../router/index";
 const state = {
     token: localStorage.getItem('token') || '',
     user: {},
+    userName:'',
     status: '',
     rooms: [],
     createdRoom: null,
@@ -16,6 +17,7 @@ const getters = {
     user: state => state.user,
     error: state => state.error,
     rooms: state => state.rooms,
+    userName: state => state.userName,
 };
 
 const actions = {
@@ -163,6 +165,7 @@ const mutations = {
 
     user_profile_success(state, user) {
         state.user = user;
+        state.userName = user.userName;
         state.status = 'success';
         state.error = null;
     },

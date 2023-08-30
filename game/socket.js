@@ -1,8 +1,12 @@
 module.exports = (io) => {
     const rooms = {};
-
+    let userNames = {};
     io.on('connection', (socket) => {
         console.log('A user connected');
+
+        socket.on('set-username', (userName) => {
+            userNames[socket.id] = userName;
+          });
 
         socket.on('join-room', (roomId) => {
             if (!roomId) {
@@ -26,8 +30,12 @@ module.exports = (io) => {
 
             // Start game if two players are in the room
             if (rooms[roomId].players.length === 2) {
+                let player1 = rooms[roomId].players[0];
+                let player2 = rooms[roomId].players[1];
                 
-                io.to(roomId).emit('start-game');
+               
+                io.to(player1).emit('start-game', { opponentName: userNames[player2] });
+                io.to(player2).emit('start-game', { opponentName: userNames[player1] });
                 io.to(rooms[roomId].players[rooms[roomId].currentPlayerIndex]).emit('turn');
             }
         });
