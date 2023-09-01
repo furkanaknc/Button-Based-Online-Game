@@ -117,6 +117,20 @@ module.exports = (io) => {
             // rooms[roomId].currentPlayerIndex = 1 - rooms[roomId].currentPlayerIndex;
             // io.to(rooms[roomId].players[rooms[roomId].currentPlayerIndex]).emit('turn');
         });
+
+        socket.on('swap-health', (data) => {
+            const roomId = data.roomId;
+            if (!rooms[roomId]) {
+                console.error(`No room found with ID: ${roomId}`);
+                return;
+            }
+            
+            const opponentSocketId = rooms[roomId].players.find(id => id !== socket.id);
+            io.to(opponentSocketId).emit('health-swapped');
+            sendLogMessageToRoom(roomId, "A Random Event!!! Players swapped health.");
+            // rooms[roomId].currentPlayerIndex = 1 - rooms[roomId].currentPlayerIndex;
+            // io.to(rooms[roomId].players[rooms[roomId].currentPlayerIndex]).emit('turn');
+        });
         
           
           
