@@ -7,7 +7,7 @@
       <button class="btn" v-if="isAboutMeOn && !isAboutmeTurkishOn" @click="isAboutmeTurkishOn = true">TR</button>
       <button class="btn" v-if="isAboutMeOn && isAboutmeTurkishOn" @click="isAboutmeTurkishOn = false">EN</button>
     </div>
-    
+
     <div class="info">
       <div class="turkish mx-auto" v-if="isTurkishOn && !isAboutMeOn">
         <p>
@@ -31,7 +31,7 @@
           You can lose or win the game with an unexpected event in the game.
         </p>
       </div>
-      <div class="about-me-turkish" v-if="isAboutMeOn && isAboutmeTurkishOn ">
+      <div class="about-me-turkish" v-if="isAboutMeOn && isAboutmeTurkishOn">
         <p>
           Merhaba! Ben Furkan. Bilgisayar Mühendisliği 2. sınıf öğrencisiyim. <br>
           Bu projeyi Socket.io ve Vue.js bilgilerimi geliştirmek için yaptım. <br>
@@ -73,20 +73,21 @@ export default {
 }
 </script>
 <style scoped>
-
-.info{
+.info {
   margin-top: 100px;
 }
-.btn{
+
+.btn {
   margin: 20px;
   background-color: #183D3D;
   color: #ffff;
   width: 200px;
   gap: 50px;
- 
+
 }
-.btn:hover{
+
+.btn:hover {
   background-color: #255757;
- 
+
 }
 </style>

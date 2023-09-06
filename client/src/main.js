@@ -1,18 +1,16 @@
-import { createApp } from 'vue'
-import App from './App.vue'
-import router from './router'
-import store from './store'
-import axios from 'axios'
-
+import { createApp } from "vue";
+import App from "./App.vue";
+import router from "./router";
+import store from "./store";
+import axios from "axios";
 
 const app = createApp(App);
 
-
 app.config.globalProperties.$http = axios;
 
-const token = localStorage.getItem('token');
-if (token){
-    axios.defaults.headers.common['Authorization'] = token;
+const token = localStorage.getItem("token");
+if (token) {
+  axios.defaults.headers.common["Authorization"] = token;
 }
 
-app.use(store).use(router).mount('#app');
+app.use(store).use(router).mount("#app");

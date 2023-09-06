@@ -15,6 +15,9 @@
       <div v-if="turn">
         <button class="btn btn-primary" @click="handleButton1" :disabled="!turn">Basic Attack</button>
         <button class="btn btn-warning" @click="handleButton2" :disabled="!turn || button2Used">Super Attack</button>
+        <button class="btn btn-danger" v-if="!specialButtonUsed" @click="handleSpecialButton">
+          {{ specialButtonText }}
+        </button>
         <button class="btn btn-success" @click="handleButton3" :disabled="!turn || button3Count >= 2">Heal</button>
         <button class="btn btn-secondary" @click="surrender" :disabled="!turn">Surrender</button>
         <h2>You have {{ timeLeft }} seconds to act.</h2>
@@ -46,6 +49,10 @@
       <router-link class="btn route-btn" to="/"> HOME</router-link>
     </div>
   </div>
+  <br>
+  <br>
+  <br>
+  <br>
 </template>
 
 <script>
@@ -58,6 +65,22 @@ export default {
     ...mapGetters(['user', 'userName']),
     playerName() {
       return this.userName
+    },
+    specialButtonText() {
+      switch (this.specialButton) {
+        case 'damage30':
+          return 'Damage Opponent by 30';
+        case 'swapHealths':
+          return 'Swap Health with Opponent';
+        case 'heal30':
+          return 'Heal Yourself by 30';
+        case 'heal50':
+          return 'Heal Yourself by 50'
+        case 'damage40':
+          return 'Damage Opponent by 40';
+        default:
+          return 'Use Special Move';
+      }
     }
   },
 
@@ -69,6 +92,8 @@ export default {
       opponentHealth: 100,
       button2Used: false,
       button3Count: 0,
+      specialButton: '',
+      specialButtonUsed: false,
       timer: null,
       timeLeft: 5,
       gameLogs: [],
@@ -137,10 +162,10 @@ export default {
       });
 
       this.socket.on('health-swapped', () => {
-          [this.playerHealth, this.opponentHealth] = [this.opponentHealth, this.playerHealth];
-          if (this.soundOn) {
-              this.swapSound.play();
-          }
+        [this.playerHealth, this.opponentHealth] = [this.opponentHealth, this.playerHealth];
+        if (this.soundOn) {
+          this.swapSound.play();
+        }
       });
 
       this.socket.on('connect_error', (error) => {
@@ -154,7 +179,7 @@ export default {
     },
 
     initializeGame() {
-      // Initial game setup logic
+      this.assignSpecialButton();
     },
     toggleSound() {
       this.soundOn = !this.soundOn;
@@ -208,6 +233,55 @@ export default {
         this.stopTimer();
       }
 
+    },
+    assignSpecialButton() {
+      const buttons = ['damage30', 'swapHealths', 'heal30', 'heal50', 'damage40'];
+      this.specialButton = buttons[Math.floor(Math.random() * buttons.length)];
+    },
+
+    handleSpecialButton() {
+      if (!this.specialButton || this.specialButtonUsed) {
+        console.log("Special button not assigned or already used.");
+        return;
+      }
+
+      const specialActions = {
+        'damage30': () => {
+          this.opponentHealth -= 30;
+          this.socket.emit('damage', { damage: 30, roomId: this.$route.params.roomId, userName: this.user.userName });
+          this.turn = false;
+          this.stopTimer();
+        },
+        'swapHealths': () => {
+          const tempHealth = this.playerHealth;
+          this.playerHealth = this.opponentHealth;
+          this.opponentHealth = tempHealth;
+          this.socket.emit('swap-health', { roomId: this.$route.params.roomId, userName: this.user.userName });
+          this.startTimer();
+
+        },
+        'heal30': () => {
+          this.socket.emit('heal', { health: 30, roomId: this.$route.params.roomId, userName: this.user.userName });
+          this.stopTimer();
+        },
+        'heal50': () => {
+          this.socket.emit('heal', { health: 50, roomId: this.$route.params.roomId, userName: this.user.userName });
+          this.stopTimer();
+        },
+        'damage40': () => {
+          this.opponentHealth -= 40;
+          this.socket.emit('damage', { damage: 40, roomId: this.$route.params.roomId, userName: this.user.userName });
+          this.turn = false;
+          this.stopTimer();
+        }
+      };
+
+      if (specialActions[this.specialButton]) {
+        console.log(`Executing special action: ${this.specialButton}`);
+        specialActions[this.specialButton]();
+        this.specialButtonUsed = true;
+
+      }
     },
 
 
@@ -332,5 +406,6 @@ export default {
 .game-log-text {
   background-color: #5C8374;
   color: #fff;
-}</style>
+}
+</style>
 

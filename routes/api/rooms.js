@@ -1,19 +1,15 @@
-const express = require('express');
+const express = require("express");
 
-const roomController = require('../../controllers/room')
+const roomController = require("../../controllers/room");
 
 const router = express.Router();
 
+router.post("/create-room", roomController.createRoom);
 
-router.post('/create-room', roomController.createRoom)
+router.get("/rooms", roomController.getRooms);
 
-router.get('/rooms',roomController.getRooms) 
+router.get("/find-room/:shortId", roomController.findRoom);
 
-router.get('/find-room/:shortId', roomController.findRoom) 
-
-router.post('/verify', roomController.verifyRoom)
-
+router.post("/verify", roomController.verifyRoom);
 
 module.exports = router;
-
-
